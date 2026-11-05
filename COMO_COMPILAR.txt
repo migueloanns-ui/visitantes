@@ -1,0 +1,6 @@
+OPCAO A (sem instalar nada): suba esta pasta para um repositorio novo no GitHub,
+va em Actions > build > Run workflow, espere ~3 min e baixe "visitante-jar".
+
+OPCAO B (no PC): instale JDK 17 e Gradle 8.5, abra um terminal nesta pasta e rode:
+    gradle build
+O arquivo sai em build/libs/visitante-1.0.0.jar
