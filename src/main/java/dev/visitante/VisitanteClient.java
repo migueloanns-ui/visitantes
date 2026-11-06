@@ -10,5 +10,6 @@ public class VisitanteClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         EntityRendererRegistry.register(ModEntities.VISITOR, VisitorRenderer::new);
+        InfectionClient.init();
     }
 }

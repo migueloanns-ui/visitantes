@@ -24,6 +24,14 @@ public class VisitanteMod implements ModInitializer {
                     Director.forceNow(ctx.getSource().getPlayerOrThrow());
                     return 1;
                 }))
+                .then(CommandManager.literal("final").executes(ctx -> {
+                    Meta.finale(ctx.getSource().getPlayerOrThrow().getServerWorld(), ctx.getSource().getPlayerOrThrow());
+                    return 1;
+                }))
+                .then(CommandManager.literal("limpar").executes(ctx -> {
+                    Infection.reset();
+                    return 1;
+                }))
                 .then(CommandManager.literal("aparecer").executes(ctx -> {
                     Director.forceSpawn(ctx.getSource().getPlayerOrThrow());
                     return 1;

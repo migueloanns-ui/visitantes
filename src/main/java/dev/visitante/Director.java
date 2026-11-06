@@ -73,7 +73,7 @@ public class Director {
         return 5;
     }
 
-    private static void schedule(ServerWorld w, int delayTicks, Runnable r) {
+    static void schedule(ServerWorld w, int delayTicks, Runnable r) {
         TASKS.add(new Scheduled(w.getServer().getTicks() + delayTicks, r));
     }
 
@@ -111,10 +111,11 @@ public class Director {
     }
 
     private static void triggerEvent(ServerWorld w, ServerPlayerEntity p, int stage) {
+        if (stage >= 4) Infection.atLeast(1);
         List<Runnable> pool = new ArrayList<>();
         pool.add(() -> soundBehind(w, p));
-                Meta.addEvents(pool, w, p, stage);
-        pool.add(() -> fakeJoin(w, p));
+        Meta.addEvents(pool, w, p, stage);
+        if (RNG.nextInt(6) == 0) pool.add(() -> fakeJoin(w, p));
         if (stage >= 2) {
             pool.add(() -> openDoors(w, p, 1, true));
             pool.add(() -> snuffTorches(w, p));
@@ -158,7 +159,7 @@ public class Director {
         return p.getPos().add(-flat.x * d, 0, -flat.z * d);
     }
 
-    private static void soundBehind(ServerWorld w, ServerPlayerEntity p) {
+    static void soundBehind(ServerWorld w, ServerPlayerEntity p) {
         Vec3d at = behind(p, 6 + RNG.nextInt(8));
         SoundEvent s = BEHIND[RNG.nextInt(BEHIND.length)];
         w.playSound(null, at.x, p.getY(), at.z, s, SoundCategory.HOSTILE, 1.0f, 0.8f + RNG.nextFloat() * 0.3f);
@@ -187,7 +188,7 @@ public class Director {
         return doors;
     }
 
-    private static void openDoors(ServerWorld w, ServerPlayerEntity p, int count, boolean fallbackSound) {
+    static void openDoors(ServerWorld w, ServerPlayerEntity p, int count, boolean fallbackSound) {
         List<BlockPos> doors = findDoors(w, p.getBlockPos(), 12, true);
         if (doors.isEmpty()) {
             if (fallbackSound) soundBehind(w, p);
@@ -203,7 +204,7 @@ public class Director {
         }
     }
 
-    private static void snuffTorches(ServerWorld w, ServerPlayerEntity p) {
+    static void snuffTorches(ServerWorld w, ServerPlayerEntity p) {
         BlockPos c = p.getBlockPos();
         List<BlockPos> torches = new ArrayList<>();
         for (BlockPos pos : BlockPos.iterate(c.add(-16, -6, -16), c.add(16, 6, 16))) {
