@@ -113,6 +113,7 @@ public class Director {
     private static void triggerEvent(ServerWorld w, ServerPlayerEntity p, int stage) {
         List<Runnable> pool = new ArrayList<>();
         pool.add(() -> soundBehind(w, p));
+                Meta.addEvents(pool, w, p, stage);
         pool.add(() -> fakeJoin(w, p));
         if (stage >= 2) {
             pool.add(() -> openDoors(w, p, 1, true));
